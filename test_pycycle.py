@@ -3,6 +3,7 @@ import os
 import pytest
 
 import pycycle.utils
+import pycycle.abstract
 
 
 def test_get_path_from_package_name():
@@ -86,3 +87,10 @@ def test_import_context():
     assert root_node is not None
     assert pycycle.utils.check_if_cycles_exist(
         root_node) == project['has_cycle']
+
+
+def test_can_import_abstract():
+    class ConcreteNode(object):
+        def children():
+            pass
+    assert pycycle.abstract.implements_node_interface(ConcreteNode())
