@@ -4,6 +4,7 @@ import pytest
 
 import pycycle.utils
 import pycycle.abstract
+from collections import namedtuple
 
 
 def test_get_path_from_package_name():
@@ -89,8 +90,25 @@ def test_import_context():
         root_node) == project['has_cycle']
 
 
+ConcreteNode = namedtuple("ConcreteNode", "children")
+
+
+def new_node(children=[]):
+    return ConcreteNode(children=children)
+
+
 def test_can_import_abstract():
-    class ConcreteNode(object):
-        def children():
-            pass
-    assert pycycle.abstract.implements_node_interface(ConcreteNode())
+    assert pycycle.abstract.implements_node_interface(new_node())
+
+
+def test_record_traversal_history():
+    edges = []
+    d = new_node()
+    c = new_node()
+    b = new_node(children=[d])
+    pycycle.abstract.add_edge_record(edges, b, d)
+    a = new_node(children=[b,c])
+    pycycle.abstract.add_edge_record(edges, a, b)
+    pycycle.abstract.add_edge_record(edges, a, c)
+    history = pycycle.abstract.dfs(a)
+    assert history == edges
