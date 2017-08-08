@@ -10,7 +10,7 @@ from setuptools import setup
 
 here = os.path.abspath(dirname(__file__))
 
-with codecs.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+with codecs.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = '\n' + f.read()
 
 base_dir = os.path.dirname(__file__)
