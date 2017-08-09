@@ -55,8 +55,9 @@ def test_graph_walker(dag):
     assert ["a","b"] in edges
     assert ["b","d"] in edges
 
+
 def test_whiteset(dag):
-    white = abstract.whiteset(dag)
+    white = abstract.membership(dag)
     assert white.contains_name("a")
     assert white.contains_name("b")
     assert white.contains_name("c")

@@ -61,15 +61,39 @@ def membership(digraph):
     return members
 
 
+class DripCounter(object):
+    def __init__(self, source, dest):
+        self.source = source
+        self.dest = dest
+        self.total_items = len(source)
+
+    @property
+    def all_items_have_been_moved(self):
+        return self.source_is_empty and self.dest_is_full
+
+    @property
+    def source_is_empty(self):
+        return len(self.source) == 0
+
+    @property
+    def dest_is_full(self):
+        return len(self.dest) == self.total_items
+
+
 def find_cycles(digraph):
-    gray = NodeSet()
-    black = NodeSet()
-    white = membership(digraph)
+    actively_visiting = NodeSet()
+    totally_visited = NodeSet()
+    not_visited = membership(digraph)
 
-    next_element = white.remove_arbitrary_element()
+    next_element = not_visited.remove_arbitrary_element()
+    actively_visiting.add(next_element)
 
-    while next_element:
-        if next_element not in black:
-            gray.add(element)
+    search_stack = [next_element]
+
+    cycle_found = False
+    drip_counter = DripCounter(not_visited, totally_visited)
+
+    while not cycle_found and not drip_counter.all_items_have_been_moved:
+        cycle_found = True
 
     return []
